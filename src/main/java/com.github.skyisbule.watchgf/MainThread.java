@@ -29,8 +29,8 @@ public class MainThread extends Thread {
         FileReader dowReader = new FileReader(Config.WRITE_FILE_PATH+"sky-downloads.txt");
         FileReader secReader = new FileReader(Config.WRITE_FILE_PATH+"sky-searchs.txt");
         Email mail = EmailBuilder.startingBlank()
-                .from("heqiut@qq.com")
-                .to("sky","heqiut@qq.com")
+                .from(Config.EMAIL_FROM)
+                .to("skyisbule",Config.EMAIL_TO)
                 .withSubject("sky-监控浏览记录")
                 .withHTMLText("<p>监控结果如附件所示</p>")
                 .withAttachment("浏览记录.txt",urlReader.readBytes(),"plain/text")

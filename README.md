@@ -8,4 +8,6 @@
 <strong>发送邮箱的端口号：</strong>SMTP_PROT  = 465;<br>
 <strong>smtp账户：</strong>SMTP_USER  = "heqiut@qq.com";<br>
 <strong>授权码或者密码：</strong>SMTP_AUTH_CODE = "yourpasswd";<br>
-
+# 如何使用
+直接打包，mvn package。<br>
+做好开机启动即可。
