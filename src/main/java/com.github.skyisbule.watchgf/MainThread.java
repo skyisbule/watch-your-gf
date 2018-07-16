@@ -19,7 +19,7 @@ public class MainThread extends Thread {
         return false;
     }
 
-    public static void doEmail(){
+    private static void doEmail(){
         Mailer mailer = MailerBuilder
                 .withSMTPServer(Config.SMTP_SERVER, Config.SMTP_PROT, Config.SMTP_USER,Config.SMTP_AUTH_CODE)
                 .withTransportStrategy(TransportStrategy.SMTPS)
