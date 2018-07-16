@@ -32,4 +32,7 @@ public class Downloads {
         this.referrer = referrer;
     }
 
+    public String toString(){
+        return id+" "+current_path+" "+referrer+" "+total_bytes+"\n";
+    }
 }

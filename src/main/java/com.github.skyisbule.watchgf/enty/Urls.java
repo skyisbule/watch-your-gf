@@ -31,4 +31,8 @@ public class Urls {
     public void setVisit_count(Integer visit_count) {
         this.visit_count = visit_count;
     }
+
+    public String toString(){
+        return uid+" "+url+" "+title+" "+visit_count+"\n";
+    }
 }

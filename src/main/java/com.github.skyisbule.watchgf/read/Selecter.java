@@ -12,8 +12,20 @@ public class Selecter {
 
     @SuppressWarnings("unchecked")
     public List<Urls> getUrls(int limit){
-        String sql = "select * from url order by last_visit_time limit "+String.valueOf(limit);
+        String sql = "select * from urls order by last_visit_time desc limit";
+        if (limit!=0){
+            sql += " "+String.valueOf(limit);
+        }
         return this.doselect(sql,"urls");
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Urls> downloads(int limit){
+        String sql = "select * from downloads order by start_time desc limit";
+        if (limit!=0){
+            sql += " "+String.valueOf(limit);
+        }
+        return this.doselect(sql,"downloads");
     }
 
     private List doselect(String sql,String type){
