@@ -2,6 +2,7 @@ package com.github.skyisbule.watchgf.read;
 
 import com.github.skyisbule.watchgf.Config;
 import com.github.skyisbule.watchgf.enty.Downloads;
+import com.github.skyisbule.watchgf.enty.Searchs;
 import com.github.skyisbule.watchgf.enty.Urls;
 
 import java.sql.*;
@@ -26,6 +27,15 @@ public class Selecter {
             sql += " "+String.valueOf(limit);
         }
         return this.doselect(sql,"downloads");
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<Searchs> searchs(int limit){
+        String sql = "select * from keyword_search_terms order by url_id desc limit";
+        if (limit!=0){
+            sql += " "+String.valueOf(limit);
+        }
+        return this.doselect(sql,"searchs");
     }
 
     private List doselect(String sql,String type){
@@ -57,6 +67,17 @@ public class Selecter {
         }
 
         if (type.equals("downloads")){
+            List<Searchs> list = new LinkedList<Searchs>();
+            while (rs.next()){
+                Searchs search = new Searchs();
+                search.setUrlId(rs.getInt("url_id"));
+                search.setTerm(rs.getString("term"));
+                list.add(search);
+            }
+            return list;
+        }
+
+        if (type.equals("searchs")){
             List<Downloads> list = new LinkedList<Downloads>();
             while (rs.next()){
                 Downloads download = new Downloads();

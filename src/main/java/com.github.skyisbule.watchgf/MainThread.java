@@ -27,6 +27,7 @@ public class MainThread extends Thread {
                 .buildMailer();
         FileReader urlReader = new FileReader(Config.WRITE_FILE_PATH+"sky-urls.txt");
         FileReader dowReader = new FileReader(Config.WRITE_FILE_PATH+"sky-downloads.txt");
+        FileReader secReader = new FileReader(Config.WRITE_FILE_PATH+"sky-searchs.txt");
         Email mail = EmailBuilder.startingBlank()
                 .from("heqiut@qq.com")
                 .to("sky","heqiut@qq.com")
@@ -34,6 +35,7 @@ public class MainThread extends Thread {
                 .withHTMLText("<p>监控结果如附件所示</p>")
                 .withAttachment("浏览记录.txt",urlReader.readBytes(),"plain/text")
                 .withAttachment("下载记录.txt",dowReader.readBytes(),"plain/text")
+                .withAttachment("搜索记录.txt",secReader.readBytes(),"plain/text")
                 .buildEmail();
         mailer.sendMail(mail);
     }
@@ -54,10 +56,12 @@ public class MainThread extends Thread {
 
         //读db  把结果写入文件
         Selecter selecter = new Selecter();
-        List res = selecter.getUrls(100);
+        List res = selecter.getUrls(Config.URL_COUNT);
         this.doWrite("urls",res);
-        res = selecter.downloads(100);
+        res = selecter.downloads(Config.DOWNLOAD_COUNT);
         this.doWrite("downloads",res);
+        res = selecter.searchs(Config.SEARCH_COUNT);
+        this.doWrite("searchs",res);
         doEmail();
 
     }
