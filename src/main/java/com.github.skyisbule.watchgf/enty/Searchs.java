@@ -17,4 +17,7 @@ public class Searchs {
     public void setTerm(String term) {
         this.term = term;
     }
+    public String toString(){
+        return urlId+" "+term+"\n";
+    }
 }

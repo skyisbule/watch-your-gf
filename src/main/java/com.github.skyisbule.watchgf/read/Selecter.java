@@ -12,50 +12,57 @@ import java.util.List;
 public class Selecter {
 
     @SuppressWarnings("unchecked")
-    public List<Urls> getUrls(int limit){
+    public List<Urls> getUrls(int limit) {
         String sql = "select * from urls order by last_visit_time desc limit";
-        if (limit!=0){
-            sql += " "+String.valueOf(limit);
+        if (limit != 0) {
+            sql += " " + String.valueOf(limit);
         }
-        return this.doselect(sql,"urls");
+        return this.doselect(sql, "urls");
     }
 
     @SuppressWarnings("unchecked")
-    public List<Urls> downloads(int limit){
+    public List<Urls> downloads(int limit) {
         String sql = "select * from downloads order by start_time desc limit";
-        if (limit!=0){
-            sql += " "+String.valueOf(limit);
+        if (limit != 0) {
+            sql += " " + String.valueOf(limit);
         }
-        return this.doselect(sql,"downloads");
+        return this.doselect(sql, "downloads");
     }
 
     @SuppressWarnings("unchecked")
-    public List<Searchs> searchs(int limit){
+    public List<Searchs> searchs(int limit) {
         String sql = "select * from keyword_search_terms order by url_id desc limit";
-        if (limit!=0){
-            sql += " "+String.valueOf(limit);
+        if (limit != 0) {
+            sql += " " + String.valueOf(limit);
         }
-        return this.doselect(sql,"searchs");
+        return this.doselect(sql, "searchs");
     }
 
-    private List doselect(String sql,String type){
+    private List doselect(String sql, String type) {
         Connection connection = null;
-        List       result     = null;
+        List result = null;
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:"+ Config.HISTORY_PATH);
+            connection = DriverManager.getConnection("jdbc:sqlite:" + Config.HISTORY_PATH);
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
             ResultSet rs = statement.executeQuery(sql);
-            result = doBinding(type,rs);
+            result = doBinding(type, rs);
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) {
+                System.err.println(e);
+            }
         }
-        catch(SQLException e) { System.err.println(e.getMessage()); } finally { try { if(connection != null) connection.close(); } catch(SQLException e) { System.err.println(e); } }
         return result;
     }
 
-    private List doBinding(String type,ResultSet rs) throws SQLException {
-        if (type.equals("urls")){
+    private List doBinding(String type, ResultSet rs) throws SQLException {
+        if (type.equals("urls")) {
             List<Urls> list = new LinkedList<Urls>();
-            while (rs.next()){
+            while (rs.next()) {
                 Urls url = new Urls();
                 url.setUid(rs.getInt("id"));
                 url.setTitle(rs.getString("title"));
@@ -66,9 +73,9 @@ public class Selecter {
             return list;
         }
 
-        if (type.equals("downloads")){
+        if (type.equals("downloads")) {
             List<Searchs> list = new LinkedList<Searchs>();
-            while (rs.next()){
+            while (rs.next()) {
                 Searchs search = new Searchs();
                 search.setUrlId(rs.getInt("url_id"));
                 search.setTerm(rs.getString("term"));
@@ -77,9 +84,9 @@ public class Selecter {
             return list;
         }
 
-        if (type.equals("searchs")){
+        if (type.equals("searchs")) {
             List<Downloads> list = new LinkedList<Downloads>();
-            while (rs.next()){
+            while (rs.next()) {
                 Downloads download = new Downloads();
                 download.setId(rs.getInt("id"));
                 download.setCurrent_path(rs.getString("current_path"));
